@@ -76,12 +76,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>../Build/LibDirectx12/$(Configuration)/</OutDir>
-    <IntDir>../Build/LibDirectx12/$(Configuration)/</IntDir>
+    <OutDir>../../Build/LibDirectx12/$(Configuration)/</OutDir>
+    <IntDir>../../Intermediate/LibDirectx12/$(Configuration)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>../Build/LibDirectx12/$(Configuration)/</OutDir>
-    <IntDir>../Build/LibDirectx12/$(Configuration)/</IntDir>
+    <OutDir>../../Build/LibDirectx12/$(Configuration)/</OutDir>
+    <IntDir>../../Intermediate/LibDirectx12/$(Configuration)/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
