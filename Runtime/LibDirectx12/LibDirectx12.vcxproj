@@ -84,11 +84,11 @@
     <IntDir>../../Intermediate/$(ProjectName)/$(Configlation)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>../../Build/$(ProjectName)/$(Configlation)/</OutDir>
+    <OutDir>../../Lib/$(ProjectName)/$(Configlation)/</OutDir>
     <IntDir>../../Intermediate/$(ProjectName)/$(Configlation)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>../../Build/$(ProjectName)/$(Configlation)/</OutDir>
+    <OutDir>../../Lib/$(ProjectName)/$(Configlation)/</OutDir>
     <IntDir>../../Intermediate/$(ProjectName)/$(Configlation)/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
