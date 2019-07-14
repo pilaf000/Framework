@@ -7,4 +7,6 @@
 
 #include <wrl.h>
 
+#include <cstdint>
+#include <string>
 #include <memory>

@@ -15,6 +15,7 @@ workspace "Framework"
         systemversion "10.0.17763.0"
 
         language "C++"
+        cppdialect "C++17"
         kind "SharedLib"
         defines {"NOMINMAX"}
 
