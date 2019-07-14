@@ -1,8 +1,5 @@
 #pragma once
-#include <stdexcept>
-
-#include "stdafx.h"
-
+#include <stdafx.h>
 
 namespace Graphics
 {
@@ -41,4 +38,4 @@ inline void ThrowIfFailed(HRESULT hr)
 	}
 }
 
-}m
+}

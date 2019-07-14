@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#include "GraphicsCommandQueue.h"
+#include <GraphicsCommandQueue.h>
 
-#include "GraphicsDevice.h"
+#include <stdafx.h>
+#include <GraphicsDevice.h>
 
 namespace Graphics
 {
