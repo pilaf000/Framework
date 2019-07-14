@@ -1,4 +1,4 @@
-Intermediate/
-Runtime/.vs/
-Runtime/.vscode/
-*.filters
+runtime/.vs/
+runtime/.vscode/
+.vscode/
+generated/

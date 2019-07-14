@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 
+
 namespace Graphics
 {
 
@@ -40,4 +41,4 @@ inline void ThrowIfFailed(HRESULT hr)
 	}
 }
 
-}
+}m
