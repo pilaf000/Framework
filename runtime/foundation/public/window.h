@@ -1,5 +1,4 @@
 ﻿#pragma once
-#define NOMINMAX
 #include <Windows.h>
 #include <cstdint>
 #include <string>
@@ -11,7 +10,6 @@ using namespace std::string_literals;
 
 class Application;
 
-///windowクラス
 class Window
 {
 public:
@@ -41,7 +39,6 @@ private:
 	Application* m_App;
 };
 
-///applicationとして扱うクラス
 class Application
 {
 public:

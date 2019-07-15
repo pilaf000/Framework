@@ -11,8 +11,8 @@ using Microsoft::WRL::ComPtr;
 class CommandQueue::Impl
 {
 public:
-	Impl();
-	~Impl();
+	Impl() = default;
+	~Impl() = default;
 public:
 	Description Desc;
 	ComPtr<ID3D12CommandQueue> NativeCommandQueue;

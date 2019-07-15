@@ -1,5 +1,4 @@
-﻿#include "window.h"
-//#include "stdafx.h"
+﻿#include <window.h>
 
 namespace
 {
@@ -29,14 +28,14 @@ void Test()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
-	//Common::Window::Description windowDesc = {};
-	//windowDesc.Title = L"Hello, World";
-	//windowDesc.Width = 640;
-	//windowDesc.Height = 360;
+	Common::Window::Description windowDesc = {};
+	windowDesc.Title = L"Hello, World";
+	windowDesc.Width = 640;
+	windowDesc.Height = 360;
 
 	Test();
 
-	//auto app = Common::Application::Create(windowDesc, hInstance, nCmdShow);
-	//app->MainLoop();
+	auto app = Common::Application::Create(windowDesc, hInstance, nCmdShow);
+	app->MainLoop();
 	return 0;
 }
