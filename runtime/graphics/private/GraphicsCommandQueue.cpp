@@ -14,8 +14,8 @@ public:
 	Impl() = default;
 	~Impl() = default;
 public:
-	Description Desc;
-	ComPtr<ID3D12CommandQueue> NativeCommandQueue;
+	Description m_desc;
+	ComPtr<ID3D12CommandQueue> m_nativeCommandQueue;
 };
 
 inline D3D12_COMMAND_QUEUE_FLAGS TypeConversion(CommandQueueFlag& flag)
@@ -64,17 +64,14 @@ inline D3D12_COMMAND_LIST_TYPE TypeConversion(CommandListType& type)
 
 //////////////////////////////////////////////////////
 
-
 CommandQueue* CommandQueue::Create(GraphicsDevice* device, Description& desc)
 {
 	return nullptr;
 }
 
 CommandQueue::CommandQueue()
-	: m_Impl(std::make_unique<Impl>())
+	: m_impl(std::make_unique<Impl>())
 {
 }
-
-
 
 }/// end of namespace Graphics

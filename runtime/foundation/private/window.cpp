@@ -6,9 +6,9 @@ namespace Common
 {
 
 Window::Window(Application* app, Description& desc, HINSTANCE hInstance, int nCmdShow)
-	: m_App(app)
-	, m_Desc(desc)
-	, m_Handle(NULL)
+	: m_app(app)
+	, m_desc(desc)
+	, m_handle(NULL)
 {
 	///windowクラス作成
 	WNDCLASSEX windowClass = {0};
@@ -20,13 +20,13 @@ Window::Window(Application* app, Description& desc, HINSTANCE hInstance, int nCm
 	windowClass.lpszClassName = L"WindowClass";
 	RegisterClassEx(&windowClass);
 
-	RECT windowRect = {0, 0, static_cast<LONG>(desc.Width), static_cast<LONG>(desc.Height)};
+	RECT windowRect = {0, 0, static_cast<LONG>(desc.width), static_cast<LONG>(desc.height)};
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 	///window作成
-	m_Handle = CreateWindow(
+	m_handle = CreateWindow(
 		windowClass.lpszClassName,
-		desc.Title.c_str(),
+		desc.title.c_str(),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
@@ -35,9 +35,9 @@ Window::Window(Application* app, Description& desc, HINSTANCE hInstance, int nCm
 		nullptr,
 		nullptr,
 		hInstance,
-		m_App);
+		m_app);
 
-	ShowWindow(m_Handle, nCmdShow);
+	ShowWindow(m_handle, nCmdShow);
 }
 
 ///windowsコールバック関数
@@ -82,16 +82,16 @@ Application* Application::Create(Window::Description& desc, HINSTANCE hInstance,
 
 //コンストラクタ内でwindow作成
 Application::Application(Window::Description& desc, HINSTANCE hInstance, int nCmdShow)
-	: m_Window(nullptr)
-	, m_IsTerminate(false)
+	: m_window(nullptr)
+	, m_isTerminate(false)
 {
-	m_Window = std::make_unique<Window>(this, desc, hInstance, nCmdShow);
+	m_window = std::make_unique<Window>(this, desc, hInstance, nCmdShow);
 }
 
 void Application::MainLoop()
 {
 	MSG msg = {0};
-	while (!m_IsTerminate)
+	while (!m_isTerminate)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{

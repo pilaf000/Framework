@@ -29,9 +29,9 @@ void Test()
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
 	Common::Window::Description windowDesc = {};
-	windowDesc.Title = L"Hello, World";
-	windowDesc.Width = 640;
-	windowDesc.Height = 360;
+	windowDesc.title = L"Hello, World";
+	windowDesc.width = 640;
+	windowDesc.height = 360;
 
 	Test();
 

@@ -13,12 +13,12 @@ class CommandQueue
 	~CommandQueue() = default;
 
 	class Impl;
-	std::unique_ptr<Impl> m_Impl;
+	std::unique_ptr<Impl> m_impl;
 public:
 	struct Description
 	{
-		CommandQueueFlag Flag = CommandQueueFlag::None;
-		CommandListType Type = CommandListType::Direct;
+		CommandQueueFlag flag = CommandQueueFlag::None;
+		CommandListType type = CommandListType::Direct;
 		Description() = default;
 	};
 	static CommandQueue* Create(GraphicsDevice* device, Description& desc);

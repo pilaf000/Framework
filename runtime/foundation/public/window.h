@@ -15,9 +15,9 @@ class Window
 public:
 	struct Description final
 	{
-		std::wstring Title = L"hello, window!"s;
-		std::uint32_t Width = 1280U;
-		std::uint32_t Height = 720U;
+		std::wstring title = L"hello, window!"s;
+		std::uint32_t width = 1280U;
+		std::uint32_t height = 720U;
 	};
 public:
 	Window(Application* app, Description& desc, HINSTANCE hInstance, int nCmdShow);
@@ -25,18 +25,18 @@ public:
 public:
 	const Description& GetDescription() const
 	{
-		return m_Desc;
+		return m_desc;
 	}
 	const HWND GetWindowHandle() const
 	{
-		return m_Handle;
+		return m_handle;
 	}
 protected:
 	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 private:
-	Description m_Desc;
-	HWND m_Handle;
-	Application* m_App;
+	Description m_desc;
+	HWND m_handle;
+	Application* m_app;
 };
 
 class Application
@@ -47,12 +47,12 @@ public:
 public:
 	const void Terminate()
 	{
-		m_IsTerminate = true;
+		m_isTerminate = true;
 	}
 	void MainLoop();
 protected:
-	std::unique_ptr<Window> m_Window;
-	bool m_IsTerminate;
+	std::unique_ptr<Window> m_window;
+	bool m_isTerminate;
 private:
 	Application(Window::Description& desc, HINSTANCE hInstance, int nCmdShow);
 };

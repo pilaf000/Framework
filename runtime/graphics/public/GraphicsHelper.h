@@ -19,15 +19,15 @@ class HrException : public std::runtime_error
 public:
 	HrException(HRESULT hr)
 		: std::runtime_error(HrToString(hr))
-		, m_HR(hr)
+		, m_hr(hr)
 	{
 	}
 	HRESULT Error()const
 	{
-		return m_HR;
+		return m_hr;
 	}
 private:
-	const HRESULT m_HR;
+	const HRESULT m_hr;
 };
 
 inline void ThrowIfFailed(HRESULT hr)
