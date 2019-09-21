@@ -1,7 +1,52 @@
 #include <GraphicsCommandQueue.h>
-
-#include <stdafx.h>
 #include <GraphicsDevice.h>
+
+namespace
+{
+	inline D3D12_COMMAND_QUEUE_FLAGS TypeConversion(Graphics::CommandQueueFlag& flag)
+{
+	switch (flag)
+	{
+		case Graphics::CommandQueueFlag::None:
+			return D3D12_COMMAND_QUEUE_FLAG_NONE;
+			break;
+		case Graphics::CommandQueueFlag::DisableGPUFlag:
+			return D3D12_COMMAND_QUEUE_FLAG_DISABLE_GPU_TIMEOUT;
+			break;
+		default:
+			return D3D12_COMMAND_QUEUE_FLAG_NONE;
+			break;
+	}
+}
+
+inline D3D12_COMMAND_LIST_TYPE TypeConversion(Graphics::CommandListType& type)
+{
+	switch (type)
+	{
+		case Graphics::CommandListType::Direct:
+			return D3D12_COMMAND_LIST_TYPE_DIRECT;
+			break;
+		case Graphics::CommandListType::Bundle:
+			return D3D12_COMMAND_LIST_TYPE_BUNDLE;
+			break;
+		case Graphics::CommandListType::Compute:
+			return D3D12_COMMAND_LIST_TYPE_COMPUTE;
+			break;
+		case Graphics::CommandListType::Copy:
+			return D3D12_COMMAND_LIST_TYPE_COPY;
+			break;
+		case Graphics::CommandListType::VideoDecode:
+			return D3D12_COMMAND_LIST_TYPE_VIDEO_DECODE;
+			break;
+		case Graphics::CommandListType::VideoProcess:
+			return D3D12_COMMAND_LIST_TYPE_VIDEO_PROCESS;
+			break;
+		default:
+			return D3D12_COMMAND_LIST_TYPE_DIRECT;
+			break;
+	}
+}
+}
 
 namespace Graphics
 {
@@ -11,56 +56,19 @@ using Microsoft::WRL::ComPtr;
 class CommandQueue::Impl
 {
 public:
-	Impl() = default;
+	Impl(const Description& desc);
 	~Impl() = default;
 public:
 	Description m_desc;
 	ComPtr<ID3D12CommandQueue> m_nativeCommandQueue;
 };
 
-inline D3D12_COMMAND_QUEUE_FLAGS TypeConversion(CommandQueueFlag& flag)
+CommandQueue::Impl::Impl(const Description& desc)
 {
-	switch (flag)
-	{
-		case CommandQueueFlag::None:
-			return D3D12_COMMAND_QUEUE_FLAG_NONE;
-			break;
-		case CommandQueueFlag::DisableGPUFlag:
-			return D3D12_COMMAND_QUEUE_FLAG_DISABLE_GPU_TIMEOUT;
-			break;
-		default:
-			return D3D12_COMMAND_QUEUE_FLAG_NONE;
-			break;
-	}
+(void)desc;
 }
 
-inline D3D12_COMMAND_LIST_TYPE TypeConversion(CommandListType& type)
-{
-	switch (type)
-	{
-		case CommandListType::Direct:
-			return D3D12_COMMAND_LIST_TYPE_DIRECT;
-			break;
-		case CommandListType::Bundle:
-			return D3D12_COMMAND_LIST_TYPE_BUNDLE;
-			break;
-		case CommandListType::Compute:
-			return D3D12_COMMAND_LIST_TYPE_COMPUTE;
-			break;
-		case CommandListType::Copy:
-			return D3D12_COMMAND_LIST_TYPE_COPY;
-			break;
-		case CommandListType::VideoDecode:
-			return D3D12_COMMAND_LIST_TYPE_VIDEO_DECODE;
-			break;
-		case CommandListType::VideoProcess:
-			return D3D12_COMMAND_LIST_TYPE_VIDEO_PROCESS;
-			break;
-		default:
-			return D3D12_COMMAND_LIST_TYPE_DIRECT;
-			break;
-	}
-}
+
 
 //////////////////////////////////////////////////////
 
@@ -69,8 +77,8 @@ CommandQueue* CommandQueue::Create(GraphicsDevice* device, Description& desc)
 	return nullptr;
 }
 
-CommandQueue::CommandQueue()
-	: m_impl(std::make_unique<Impl>())
+CommandQueue::CommandQueue(const Description& desc)
+	: m_impl(std::make_unique<Impl>(desc))
 {
 }
 

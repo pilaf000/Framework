@@ -6,14 +6,12 @@ namespace Graphics
 
 class GraphicsDevice
 {
-class Impl;
+	class Impl;
 	std::unique_ptr<Impl> m_impl;
-	
+public:
 	GraphicsDevice();
 	~GraphicsDevice();
-public:
-	static GraphicsDevice* Create();
-	
+
 	const ID3D12Device* NativeDevice() const;
 };
 

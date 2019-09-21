@@ -4,14 +4,10 @@
 
 namespace Graphics
 {
-
 class GraphicsDevice;
 
 class CommandQueue
 {
-	CommandQueue();
-	~CommandQueue() = default;
-
 	class Impl;
 	std::unique_ptr<Impl> m_impl;
 public:
@@ -22,6 +18,9 @@ public:
 		Description() = default;
 	};
 	static CommandQueue* Create(GraphicsDevice* device, Description& desc);
+	
+	CommandQueue(const Description& desc);
+	~CommandQueue() = default;
 };
 
 }/// end of namespace Graphics

@@ -1,6 +1,4 @@
-#include <../public/GraphicsDevice.h>
-
-#include <stdafx.h>
+#include <GraphicsDevice.h>
 #include <GraphicsHelper.h>
 
 namespace Graphics
@@ -61,7 +59,6 @@ const ID3D12Device* GraphicsDevice::Impl::NativeDevice() const
 	return m_nativeDevice.Get();
 }
 
-
 void GraphicsDevice::Impl::GetHardwareAdapter(IDXGIFactory2* factory, IDXGIAdapter1** adapters)
 {
 	ComPtr<IDXGIAdapter1> adapter;
@@ -83,12 +80,6 @@ void GraphicsDevice::Impl::GetHardwareAdapter(IDXGIFactory2* factory, IDXGIAdapt
 }
 
 //////////////////////////////////////////////////////////
-
-GraphicsDevice* GraphicsDevice::Create()
-{
-	
-	return nullptr;
-}
 
 const ID3D12Device* GraphicsDevice::NativeDevice() const
 {
