@@ -3,25 +3,16 @@
 namespace
 {
 
-void Test()
-{
+class Test {
+public:
+Test() = default;
+~Test() = default;
 
-	auto x = 1.f;
-	auto y = 2u;
-	auto z = 0.;
-
-	auto f = [&]() 
-	{
-		double result = 0.;
-
-		result = (double)x + (double)y;
-
-		return result;
-	};
-
-	auto a = f();
-
+void update(){
+	
 }
+private:
+};
 
 }
 
@@ -33,7 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 	windowDesc.width = 640;
 	windowDesc.height = 360;
 
-	Test();
+	Test t;
+	t.update();
 
 	auto app = Common::Application::Create(windowDesc, hInstance, nCmdShow);
 	app->MainLoop();
