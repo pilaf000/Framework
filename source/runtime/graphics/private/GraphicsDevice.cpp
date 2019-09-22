@@ -1,3 +1,5 @@
+#include <stdafx.h>
+
 #include <GraphicsDevice.h>
 #include <GraphicsHelper.h>
 

@@ -1,3 +1,5 @@
+#include <stdafx.h>
+
 #include <GraphicsCommandQueue.h>
 #include <GraphicsDevice.h>
 

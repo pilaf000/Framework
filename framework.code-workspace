@@ -6,7 +6,6 @@
 	],
 	"settings": {
 		"files.associations": {
-			"memory": "cpp"
 		}
 	}
 }

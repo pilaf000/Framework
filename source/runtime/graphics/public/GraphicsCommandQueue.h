@@ -1,5 +1,6 @@
 #pragma once
-#include <stdafx.h>
+#include <memory>
+
 #include <GraphicsTypes.h>
 
 namespace Graphics

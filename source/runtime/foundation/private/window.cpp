@@ -1,6 +1,5 @@
-﻿#include "window.h"
-
-#include <memory>
+﻿#include <memory>
+#include <window.h>
 
 namespace Common
 {

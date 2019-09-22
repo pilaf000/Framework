@@ -20,7 +20,7 @@ workspace "Framework"
     filter "configurations:Debug"
         do
             defines {"DEBUG"}
-            flags {"Symbols"}
+            symbols "On"
         end
 
     filter "configurations:Release"
@@ -28,61 +28,95 @@ workspace "Framework"
             defines {"NDEBUG"}
             optimize "On"
         end
+
+    runtimeDir = "../source/runtime/"
+    samplesDir = "../source/samples/"
+
+    group "runtime"
+        project "foundation"
+        do
+            location "../generated/runtime/foundation/"
+            kind "StaticLib"
+            
+            files {
+                runtimeDir .. "foundation/**.h",
+                runtimeDir .. "foundation/**.cpp"
+            }
+            includedirs {
+                runtimeDir .. "foundation/public",
+            }
+        end
+
+        project "graphics"
+        do
+            location "../generated/runtime/graphics/"
+            kind "StaticLib"
+            pchheader ('stdafx.h')
+            pchsource (runtimeDir .. 'graphics/private/stdafx.cpp')
+
+            files {
+                runtimeDir .. "graphics/**.h",
+                runtimeDir .. "graphics/**.cpp"
+            }
+            includedirs {
+                runtimeDir .. "foundation/public",
+                runtimeDir .. "graphics/public",
+                runtimeDir .. "graphics/private",
+            }
+            links {
+                "d3d12.lib",
+                "dxgi.lib",
+                "d3dcompiler.lib"
+            }
+        end
+
+    group "samples"
+        project "test"
+        do
+            location "../generated/samples/test/"
+            kind "WindowedApp"
+            
+            files {
+                samplesDir .. "test/**.h",
+                samplesDir .. "test/**.cpp"
+            }
+            includedirs {
+                samplesDir .. "test/public",
+                runtimeDir .. "foundation/public",
+                runtimeDir .. "graphics/public",            
+            }
+            links {
+                "graphics",
+                "foundation",
+            }
+        end
     
-    project "foundation"
-    do
-        location "../generated/foundation/"
-        kind "StaticLib"
+        project "helloPBR"
+        do
+            location "../generated/samples/helloPBR/"
+            kind "WindowedApp"
+            pchheader ('stdafx.h')
+            pchsource (samplesDir .. 'helloPBR/private/stdafx.cpp')
 
-        files {
-            "../runtime/foundation/**.h",
-            "../runtime/foundation/**.cpp"
-        }
-
-        includedirs {
-            "../runtime/foundation/public",
-            "../runtime/foundation/private",
-        }
-    end
-
-    project "graphics"
-    do
-        location "../generated/graphics/"
-        kind "StaticLib"
-
-        files {
-            "../runtime/graphics/**.h",
-            "../runtime/graphics/**.cpp"
-        }
-
-        includedirs {
-            "../runtime/graphics/public",
-            "../runtime/graphics/private",
-        }
-        links {
-            "d3d12.lib",
-            "dxgi.lib",
-            "d3dcompiler.lib"
-        }
-    end
-    
-    project "test"
-    do
-        location "../generated/test/"
-        kind "WindowedApp"
-
-        files {
-            "../runtime/test/**.h",
-            "../runtime/test/**.cpp"
-        }
-
-        includedirs {
-            "../runtime/test/public",
-            "../runtime/foundation/public",
-            "../runtime/graphics/public",            
-        }
-        links {
-            "graphics",
-            "foundation",
-        }
-    end
+            files {
+                samplesDir .. "helloPBR/**.h",
+                samplesDir .. "helloPBR/**.cpp",
+                samplesDir .. "helloPBR/assets/*"
+            }
+            includedirs {
+                samplesDir .. "helloPBR/public",
+            }
+            links {
+                "d3d12.lib",
+                "dxgi.lib",
+                "d3dcompiler.lib"
+            }
+            filter {"files:**.hlsl"}
+                shadermodel "5.0"
+            filter {"files:**PS.hlsl"}
+                shadertype "Pixel"
+                shaderentry "PSMain"
+            filter {"files:**VS.hlsl"}
+                shadertype "Vertex"
+                shaderentry "VSMain"
+        end
