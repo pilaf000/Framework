@@ -1,12 +1,16 @@
 struct PSInput
 {
 	float4 position : SV_POSITION;
+	float4 color : COLOR;
+	float3 normal : NORMAL;
 	float2 uv : TEXCOORD;
 };
 
 struct Vertex
 {
 	float3 position : POSITION;
+	float4 color : COLOR;
+	float3 normal : NORMAL;
 	float2 uv : TEXCOORD;
 };
 
@@ -26,6 +30,8 @@ PSInput VSMain(Vertex vertex)
 
 	PSInput result;
 	result.position = pos;
+	result.color = vertex.color;
+	result.normal= vertex.normal;
 	result.uv = vertex.uv;
 
 	return result;

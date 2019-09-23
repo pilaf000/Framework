@@ -1,6 +1,8 @@
 struct PSInput
 {
 	float4 position : SV_POSITION;
+	float4 color : COLOR;
+	float3 normal : NORMAL;
 	float2 uv : TEXCOORD;
 };
 
@@ -9,5 +11,5 @@ SamplerState g_sampler : register(s0);
 
 float4 PSMain(PSInput input) : SV_TARGET
 {
-	return g_texture.Sample(g_sampler, input.uv);
+	return input.color;
 }
