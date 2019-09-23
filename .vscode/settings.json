@@ -1,5 +1,5 @@
 {
-    "C_Cpp.clang_format_style": "{BasedOnStyle: WebKit, PointerAlignment: Left, IndentWidth: 4, AccessModifierOffset: -4, BreakConstructorInitializers: BeforeComma, BreakBeforeBraces: Allman, }",
+    "C_Cpp.clang_format_style": "{BasedOnStyle: WebKit, PointerAlignment: Left, IndentWidth: 4, AccessModifierOffset: -4, BreakConstructorInitializers: BeforeComma, BreakBeforeBraces: Allman, SpaceBeforeParens: Never}",
     "C_Cpp.updateChannel": "Insiders",
     "explorer.confirmDragAndDrop": false,
     "editor.fontSize": 12,
