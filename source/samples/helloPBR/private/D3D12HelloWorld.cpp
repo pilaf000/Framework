@@ -255,7 +255,7 @@ void D3D12HelloWindow::LoadAssets()
 
     // Create mesh buffers.
     m_sphere.Init(m_device);
-    m_sphere.CreateBuffers(0.5f, 30, 30);
+    m_sphere.CreateBuffers(1.f, 72, 36);
 
     // Create the command list.
     m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_commandList));
@@ -266,7 +266,7 @@ void D3D12HelloWindow::LoadAssets()
         std::unique_ptr<uint8_t[]> ddsData;
         std::vector<D3D12_SUBRESOURCE_DATA> subresouceData;
         ThrowIfFailed(DirectX::LoadDDSTextureFromFile(m_device.Get(),
-            (assetsDir + L"directx12.dds"s).c_str(),
+            (assetsDir + L"earth.dds"s).c_str(),
             &m_texture,
             ddsData,
             subresouceData));
@@ -342,7 +342,7 @@ void D3D12HelloWindow::InitializeMatrix()
         &m_matrix.Projection,
         XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
 
-    constexpr DirectX::XMVECTORF32 eye = { 0.0f, 0.5f, -1.5f, 0.0f };
+    constexpr DirectX::XMVECTORF32 eye = { 0.0f, 0.5f, -5.f, 0.0f };
     constexpr DirectX::XMVECTORF32 at = { 0.0f, 0.0f, 0.0f, 0.0f };
     constexpr DirectX::XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
 
@@ -378,10 +378,7 @@ void D3D12HelloWindow::PopulateCommandList()
     constexpr float clearColor[] = { 0.f, 0.2f, 0.4f, 1.f };
     m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 
-    m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    m_commandList->IASetVertexBuffers(0, 1, &m_sphere.GetVertexBufferView());
-    m_commandList->IASetIndexBuffer(&m_sphere.GetIndexBufferView());
-    m_commandList->DrawIndexedInstanced(m_sphere.GetIndexList().size(), 1, 0, 0, 0);
+    m_sphere.Draw(m_commandList.Get());
 
     m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 

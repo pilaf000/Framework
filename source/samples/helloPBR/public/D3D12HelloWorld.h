@@ -22,16 +22,16 @@ private:
         DirectX::XMFLOAT4X4 Projection;
     };
 
-    static constexpr UINT FrameCount = 2;
-    static constexpr UINT TextureWidth = 1200;
-    static constexpr UINT TextureHeight = 1200;
-    static constexpr UINT PixelPerSize = 4;
+    static const UINT FrameCount = 2;
+    static const UINT TextureWidth = 1300;
+    static const UINT TextureHeight = 962;
+    static const UINT PixelPerSize = 4;
 
     // Pipeline objects.
     CD3DX12_VIEWPORT m_viewport;
     CD3DX12_RECT m_scissorRect;
 
-	ComPtr<ID3D12Device> m_device;
+    ComPtr<ID3D12Device> m_device;
 
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
     ComPtr<ID3D12GraphicsCommandList> m_commandList;
