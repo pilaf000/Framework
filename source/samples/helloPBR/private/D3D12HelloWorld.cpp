@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include <string>
 
+#include <imgui.h>
+#include <imgui_impl_dx12.h>
+#include <imgui_impl_win32.h>
+
 #include "D3D12HelloWorld.h"
 #include "DDSTextureLoader12.h"
 
@@ -12,14 +16,38 @@ D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name)
     , m_rtvDescriptorSize(0)
     , m_constantBufferBegin(nullptr)
     , m_angle(0.f)
+    , m_clearColor{ 0.f, 0.2f, 0.4f, 1.f }
 {
     InitializeMatrix();
+}
+
+D3D12HelloWindow::~D3D12HelloWindow()
+{
+    ImGui_ImplDX12_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void D3D12HelloWindow::OnInit()
 {
     LoadPipeline();
     LoadAssets();
+
+    // imgui intialize
+    {
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+
+        ImGui::StyleColorsDark();
+
+        ImGui_ImplWin32_Init(Win32Application::GetHwnd());
+        ImGui_ImplDX12_Init(
+            m_device.Get(),
+            3,
+            DXGI_FORMAT_R8G8B8A8_UNORM,
+            m_descriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+            m_descriptorHeap->GetGPUDescriptorHandleForHeapStart());
+    }
 }
 
 // Update frame-based values.
@@ -36,6 +64,7 @@ void D3D12HelloWindow::OnUpdate()
     DirectX::XMStoreFloat4x4(&m_matrix.Model, DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(radian)));
 
     memcpy(m_constantBufferBegin, &m_matrix, sizeof(m_matrix));
+    ImGuiUpdate();
 }
 
 // Render the scene.
@@ -119,7 +148,7 @@ void D3D12HelloWindow::LoadPipeline()
 
         // Shader Resource view.
         D3D12_DESCRIPTOR_HEAP_DESC srvcbvHeapDesc = {};
-        srvcbvHeapDesc.NumDescriptors = 2;
+        srvcbvHeapDesc.NumDescriptors = 100;
         srvcbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
         srvcbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
         m_device->CreateDescriptorHeap(&srvcbvHeapDesc, IID_PPV_ARGS(&m_descriptorHeap));
@@ -375,10 +404,11 @@ void D3D12HelloWindow::PopulateCommandList()
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_frameIndex, m_rtvDescriptorSize);
     m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
 
-    constexpr float clearColor[] = { 0.f, 0.2f, 0.4f, 1.f };
-    m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+    m_commandList->ClearRenderTargetView(rtvHandle, m_clearColor, 0, nullptr);
 
     m_sphere.Draw(m_commandList.Get());
+    ImGui::Render();
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_commandList.Get());
 
     m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
@@ -400,4 +430,32 @@ void D3D12HelloWindow::WaitForPreviousFrame()
     }
 
     m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
+}
+
+void D3D12HelloWindow::ImGuiUpdate()
+{
+    // Start the Dear ImGui frame
+    ImGui_ImplDX12_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    {
+        static float f = 0.0f;
+        static int counter = 0;
+
+        ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
+
+        ImGui::Text("This is some useful text."); // Display some text (you can use a format strings too)
+
+        ImGui::SliderFloat("float", &f, 0.0f, 1.0f); // Edit 1 float using a slider from 0.0f to 1.0f
+        ImGui::ColorEdit3("clear color", (float*)&m_clearColor); // Edit 3 floats representing a color
+
+        if(ImGui::Button("Button")) // Buttons return true when clicked (most widgets return true when edited/activated)
+            counter++;
+        ImGui::SameLine();
+        ImGui::Text("counter = %d", counter);
+
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::End();
+    }
 }

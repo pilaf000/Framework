@@ -51,8 +51,6 @@ workspace "Framework"
         do
             location "../generated/runtime/graphics/"
             kind "StaticLib"
-            pchheader ('stdafx.h')
-            pchsource (runtimeDir .. 'graphics/private/stdafx.cpp')
 
             files {
                 runtimeDir .. "graphics/**.h",
@@ -95,8 +93,6 @@ workspace "Framework"
         do
             location "../generated/samples/helloPBR/"
             kind "WindowedApp"
-            pchheader ('stdafx.h')
-            pchsource (samplesDir .. 'helloPBR/private/stdafx.cpp')
 
             files {
                 samplesDir .. "helloPBR/**.h",
@@ -105,6 +101,7 @@ workspace "Framework"
             }
             includedirs {
                 samplesDir .. "helloPBR/public",
+                samplesDir .. "helloPBR/external",
             }
             links {
                 "d3d12.lib",

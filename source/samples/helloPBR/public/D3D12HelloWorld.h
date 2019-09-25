@@ -8,7 +8,7 @@ class D3D12HelloWindow : public DXSample
 {
 public:
     D3D12HelloWindow(UINT width, UINT height, std::wstring name);
-
+    ~D3D12HelloWindow();
     virtual void OnInit();
     virtual void OnUpdate();
     virtual void OnRender();
@@ -20,6 +20,12 @@ private:
         DirectX::XMFLOAT4X4 Model;
         DirectX::XMFLOAT4X4 View;
         DirectX::XMFLOAT4X4 Projection;
+    };
+
+    struct MeshInfo
+    {
+        DirectX::XMFLOAT4 baseColor;
+        float roughness;
     };
 
     static const UINT FrameCount = 2;
@@ -56,6 +62,8 @@ private:
 
     float m_angle;
 
+    float m_clearColor[4];
+
     // Synchronization objects.
     UINT m_frameIndex;
     HANDLE m_fenceEvent;
@@ -64,10 +72,12 @@ private:
 
     // primitive mesh
     SphereMesh m_sphere;
+    MeshInfo m_info;
 
     void LoadPipeline();
     void LoadAssets();
     void InitializeMatrix();
     void PopulateCommandList();
     void WaitForPreviousFrame();
+    void ImGuiUpdate();
 };
