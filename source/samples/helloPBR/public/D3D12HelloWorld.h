@@ -17,15 +17,23 @@ public:
 private:
     struct Matrix
     {
-        DirectX::XMFLOAT4X4 Model;
+        DirectX::XMFLOAT4X4 World;
         DirectX::XMFLOAT4X4 View;
         DirectX::XMFLOAT4X4 Projection;
     };
 
-    struct MeshInfo
+    struct MaterialInfo
     {
-        DirectX::XMFLOAT4 baseColor;
-        float roughness;
+        float baseColor[3] = { 1.f, 1.f, 1.f };
+        float roughness = 0.1f;
+        float metallic = 0.1f;
+        float reflectance = 0.1f;
+    };
+    struct LightInfo
+    {
+        float direction[3] = { 0.f };
+        float color[3] = { 1.f, 1.f, 1.f };
+        float intensity = 0.1f;
     };
 
     static const UINT FrameCount = 2;
@@ -55,12 +63,26 @@ private:
     ComPtr<ID3D12Resource> m_texture;
     ComPtr<ID3D12DescriptorHeap> m_descriptorHeap;
     UINT m_descriptorSize;
-    ComPtr<ID3D12Resource> m_constantBuffer;
-    UINT m_constantBufferSize;
-    UINT8* m_constantBufferBegin;
+
+    //matrix cbuf
+    ComPtr<ID3D12Resource> m_matrixConstantBuffer;
+    UINT m_matrixConstantBufferSize;
+    UINT8* m_matrixConstantBufferBegin;
     Matrix m_matrix;
 
     float m_angle;
+
+    // material cbuf
+    ComPtr<ID3D12Resource> m_materialConstantBuffer;
+    UINT m_materialConstantBufferSize;
+    UINT8* m_materialConstantBufferBegin;
+    MaterialInfo m_material;
+
+    // material cbuf
+    ComPtr<ID3D12Resource> m_lightConstantBuffer;
+    UINT m_lightConstantBufferSize;
+    UINT8* m_lightConstantBufferBegin;
+    LightInfo m_light;
 
     float m_clearColor[4];
 
@@ -72,7 +94,6 @@ private:
 
     // primitive mesh
     SphereMesh m_sphere;
-    MeshInfo m_info;
 
     void LoadPipeline();
     void LoadAssets();

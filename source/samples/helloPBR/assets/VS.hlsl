@@ -14,9 +14,9 @@ struct Vertex
 	float2 uv : TEXCOORD;
 };
 
-cbuffer ConstantBuffer : register(b0)
+cbuffer MatrixInfo : register(b0)
 {
-	float4x4 model;
+	float4x4 world;
 	float4x4 view;
 	float4x4 projection;
 };
@@ -24,7 +24,7 @@ cbuffer ConstantBuffer : register(b0)
 PSInput VSMain(Vertex vertex)
 {
 	float4 pos = float4(vertex.position, 1.0);
-	pos = mul(pos, model);
+	pos = mul(pos, world);
 	pos = mul(pos, view);
 	pos = mul(pos, projection);
 
