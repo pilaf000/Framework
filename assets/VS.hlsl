@@ -1,8 +1,9 @@
 struct PSInput
 {
 	float4 position : SV_POSITION;
+	float4 position_w : POSITION;
 	float4 color : COLOR;
-	float3 normal : NORMAL;
+	float4 normal_w : NORMAL;
 	float2 uv : TEXCOORD;
 };
 
@@ -30,8 +31,9 @@ PSInput VSMain(Vertex vertex)
 
 	PSInput result;
 	result.position = pos;
+	result.position_w = mul(float4(vertex.position, 1.0), world);
 	result.color = vertex.color;
-	result.normal= vertex.normal;
+	result.normal_w = mul(float4(vertex.normal, 0), world);
 	result.uv = vertex.uv;
 
 	return result;

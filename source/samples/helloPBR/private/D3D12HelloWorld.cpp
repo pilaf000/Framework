@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <filesystem>
 #include <string>
 
 #include <imgui.h>
@@ -32,6 +33,7 @@ D3D12HelloWindow::~D3D12HelloWindow()
 
 void D3D12HelloWindow::OnInit()
 {
+    InitAssetDir();
     LoadPipeline();
     LoadAssets();
     // imgui intialize
@@ -104,6 +106,29 @@ void D3D12HelloWindow::OnDestroy()
 
     CloseHandle(m_fenceEvent);
 }
+
+namespace
+{
+inline std::wstring find_root_path_w(std::wstring& path)
+{
+    constexpr auto rootName = L"root";
+    if(std::filesystem::exists(path + rootName))
+    {
+        return path;
+    }
+    return find_root_path_w(path + L"..\\");
+}
+}
+
+void D3D12HelloWindow::InitAssetDir()
+{
+    using namespace std::string_literals;
+    wchar_t currentDir[255];
+    ::GetCurrentDirectoryW(255, currentDir);
+
+    std::wstring currentDirW(currentDir);
+    m_assetsDir = find_root_path_w(currentDirW + L"\\"s) + L"assets\\"s;
+};
 
 // Load the rendering pipeline dependencies.
 void D3D12HelloWindow::LoadPipeline()
@@ -192,7 +217,6 @@ void D3D12HelloWindow::LoadPipeline()
 void D3D12HelloWindow::LoadAssets()
 {
     using namespace std::string_literals;
-    const auto assetsDir = L"../../../source/samples/helloPBR/assets/"s;
 
     // Create the root signature.
     {
@@ -204,7 +228,7 @@ void D3D12HelloWindow::LoadAssets()
         }
 
         CD3DX12_DESCRIPTOR_RANGE1 ranges[4];
-        ranges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+        ranges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 10, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
         ranges[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
         ranges[2].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
         ranges[3].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
@@ -247,8 +271,8 @@ void D3D12HelloWindow::LoadAssets()
 #else
         UINT compileFlags = 0;
 #endif
-        ThrowIfFailed(D3DCompileFromFile((assetsDir + L"VS.hlsl"s).c_str(), nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
-        ThrowIfFailed(D3DCompileFromFile((assetsDir + L"PS.hlsl"s).c_str(), nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
+        ThrowIfFailed(D3DCompileFromFile((m_assetsDir + L"VS.hlsl"s).c_str(), nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
+        ThrowIfFailed(D3DCompileFromFile((m_assetsDir + L"PS.hlsl"s).c_str(), nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
 
         // Define the vertex input layout.
         D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
@@ -360,7 +384,7 @@ void D3D12HelloWindow::LoadAssets()
             std::unique_ptr<uint8_t[]> ddsData;
             std::vector<D3D12_SUBRESOURCE_DATA> subresouceData;
             ThrowIfFailed(DirectX::LoadDDSTextureFromFile(m_device.Get(),
-                (assetsDir + L"earth.dds"s).c_str(),
+                (m_assetsDir + L"earth.dds"s).c_str(),
                 &m_texture,
                 ddsData,
                 subresouceData));
@@ -387,7 +411,7 @@ void D3D12HelloWindow::LoadAssets()
             srvDesc.Format = textureDesc.Format;
             srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
             srvDesc.Texture2D.MipLevels = subresoucesize;
-            CD3DX12_CPU_DESCRIPTOR_HANDLE srvHandle(m_descriptorHeap->GetCPUDescriptorHandleForHeapStart(), 0, 0);
+            CD3DX12_CPU_DESCRIPTOR_HANDLE srvHandle(m_descriptorHeap->GetCPUDescriptorHandleForHeapStart(), 10, m_descriptorSize);
             m_device->CreateShaderResourceView(m_texture.Get(), &srvDesc, srvHandle);
 
             m_commandList->DiscardResource(textureUploadHeap.Get(), nullptr);
@@ -437,10 +461,13 @@ void D3D12HelloWindow::InitializeMatrix()
         &m_matrix.Projection,
         XMMatrixTranspose(perspectiveMatrix * orientationMatrix));
 
-    constexpr DirectX::XMVECTORF32 eye = { 0.0f, 0.5f, -5.f, 0.0f };
+    m_material.view[0] = 0.f;
+    m_material.view[1] = 0.f;
+    m_material.view[2] = -5.f;
+
+    constexpr DirectX::XMVECTORF32 eye = { 0.0f, 0.0f, -5.f, 0.0f };
     constexpr DirectX::XMVECTORF32 at = { 0.0f, 0.0f, 0.0f, 0.0f };
     constexpr DirectX::XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
-
     XMStoreFloat4x4(&m_matrix.View, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 }
 
@@ -456,14 +483,12 @@ void D3D12HelloWindow::PopulateCommandList()
     ID3D12DescriptorHeap* heaps[] = { m_descriptorHeap.Get() };
     m_commandList->SetDescriptorHeaps(_countof(heaps), heaps);
 
-    CD3DX12_GPU_DESCRIPTOR_HANDLE srvHandle(m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), 0, 0);
+    CD3DX12_GPU_DESCRIPTOR_HANDLE srvHandle(m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), 10, m_descriptorSize);
     CD3DX12_GPU_DESCRIPTOR_HANDLE matrixCbvHandle(m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), 1, m_descriptorSize);
     CD3DX12_GPU_DESCRIPTOR_HANDLE materialCbvHandle(m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), 2, m_descriptorSize);
-    //CD3DX12_GPU_DESCRIPTOR_HANDLE lightCbvHandle(m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), 3, m_descriptorSize);
     m_commandList->SetGraphicsRootDescriptorTable(0, srvHandle);
     m_commandList->SetGraphicsRootDescriptorTable(1, matrixCbvHandle);
     m_commandList->SetGraphicsRootDescriptorTable(2, materialCbvHandle);
-    //m_commandList->SetGraphicsRootDescriptorTable(3, lightCbvHandle);
 
     m_commandList->RSSetViewports(1, &m_viewport);
     m_commandList->RSSetScissorRects(1, &m_scissorRect);
@@ -477,6 +502,7 @@ void D3D12HelloWindow::PopulateCommandList()
     m_commandList->ClearRenderTargetView(rtvHandle, m_clearColor, 0, nullptr);
 
     m_sphere.Draw(m_commandList.Get());
+
     ImGui::Render();
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), m_commandList.Get());
 

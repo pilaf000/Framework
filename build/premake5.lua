@@ -31,6 +31,7 @@ workspace "Framework"
 
     runtimeDir = "../source/runtime/"
     samplesDir = "../source/samples/"
+    assetDir = "../assets/"
 
     group "runtime"
         project "foundation"
@@ -97,7 +98,7 @@ workspace "Framework"
             files {
                 samplesDir .. "helloPBR/**.h",
                 samplesDir .. "helloPBR/**.cpp",
-                samplesDir .. "helloPBR/assets/*"
+                assetDir .. "*",
             }
             includedirs {
                 samplesDir .. "helloPBR/public",

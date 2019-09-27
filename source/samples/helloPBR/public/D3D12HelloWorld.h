@@ -28,12 +28,14 @@ private:
         float roughness = 0.1f;
         float metallic = 0.1f;
         float reflectance = 0.1f;
+		float pads[2] = { 0.f, 0.f };
+        float view[3] = { 1.f, 1.f, 1.f };
     };
     struct LightInfo
     {
         float direction[3] = { 0.f };
-        float color[3] = { 1.f, 1.f, 1.f };
         float intensity = 0.1f;
+        float color[3] = { 1.f, 1.f, 1.f };
     };
 
     static const UINT FrameCount = 2;
@@ -59,9 +61,10 @@ private:
     ComPtr<ID3D12RootSignature> m_rootSignature;
     ComPtr<ID3D12PipelineState> m_pipelineState;
 
+    ComPtr<ID3D12DescriptorHeap> m_descriptorHeap;
     //Resources
     ComPtr<ID3D12Resource> m_texture;
-    ComPtr<ID3D12DescriptorHeap> m_descriptorHeap;
+
     UINT m_descriptorSize;
 
     //matrix cbuf
@@ -95,6 +98,9 @@ private:
     // primitive mesh
     SphereMesh m_sphere;
 
+    std::wstring m_assetsDir;
+
+    void InitAssetDir();
     void LoadPipeline();
     void LoadAssets();
     void InitializeMatrix();

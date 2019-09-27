@@ -1,24 +1,26 @@
-struct PSInput
+﻿struct PSInput
 {
-	float4 position : SV_POSITION;
-	float4 color : COLOR;
-	float3 normal : NORMAL;
-	float2 uv : TEXCOORD;
+	float4 position : SV_POSITION; 	// perspective変換後の頂点座標
+	float4 position_w : POSITION;  	// ワールド空間の頂点座標
+	float4 color : COLOR;		   	// 頂点カラー
+	float4 normal_w : NORMAL;	   	// ワールド空間の法線
+	float2 uv : TEXCOORD;		   	// テクスチャuv
 };
 
 cbuffer MaterialInfo : register(b1)
 {
-	float3 baseColor;
-	float roughness;
-	float metallic;
-	float reflectance;
-	float3 view;
+	float3 baseColor;				// ベースカラー
+	float roughness;				// 表面の荒さ
+	float metallic;					// 金属感
+	float reflectance;				// 反射率
+	float2 pad;						// 使わない
+	float3 view;					// 視点座標
 };
 cbuffer LightInfo : register(b2)
 {
-	float3 direction;
-	float3 lightColor;
-	float intensity;
+	float3 direction;				// ライトの方向
+	float3 lightColor;				// ライトのカラー
+	float intensity;				// ライトの強さ
 };
 
 Texture2D g_texture : register(t10);
@@ -26,6 +28,5 @@ SamplerState g_sampler : register(s0);
 
 float4 PSMain(PSInput input) : SV_TARGET
 {
-	return float4(g_texture.Sample(g_sampler, input.uv) * baseColor * lightColor, 1.0);
-	//return float4(0, 0, 0, 1);
+	return float4(0, 0, 0, 1);
 }
