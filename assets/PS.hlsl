@@ -12,6 +12,7 @@ cbuffer MaterialInfo : register(b1)
 	float roughness;
 	float metallic;
 	float reflectance;
+	float3 view;
 };
 cbuffer LightInfo : register(b2)
 {
@@ -20,10 +21,11 @@ cbuffer LightInfo : register(b2)
 	float intensity;
 };
 
-Texture2D g_texture : register(t0);
+Texture2D g_texture : register(t10);
 SamplerState g_sampler : register(s0);
 
 float4 PSMain(PSInput input) : SV_TARGET
 {
-	return float4(0, 0, 0, 1);
+	return float4(g_texture.Sample(g_sampler, input.uv) * baseColor * lightColor, 1.0);
+	//return float4(0, 0, 0, 1);
 }
