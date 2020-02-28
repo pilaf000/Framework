@@ -543,7 +543,7 @@ void D3D12HelloWindow::ImGuiUpdate()
         ImGui::ColorEdit3("Base Color", (float*)&m_material.baseColor);
         ImGui::SliderFloat("Reflectance", &m_material.reflectance, 0.0f, 1.0f);
         ImGui::SliderFloat("Metallic", &m_material.metallic, 0.0f, 1.0f);
-        ImGui::SliderFloat("Roughness", &m_material.roughness, 0.0f, 1.0f);
+        ImGui::SliderFloat("Roughness", &m_material.roughness, 0.001f, 1.0f);
         ImGui::End();
 
         ImGui::Begin("Light Info");
