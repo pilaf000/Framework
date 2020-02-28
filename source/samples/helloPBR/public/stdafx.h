@@ -12,6 +12,8 @@
 #include <DirectXMath.h>
 #include "d3dx12.h"
 
+#include <cmath>
 #include <string>
 #include <wrl.h>
 #include <shellapi.h>
+#include <stdexcept>
