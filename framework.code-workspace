@@ -4,5 +4,10 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"cstdint": "cpp"
+		},
+		"files.encoding": "utf8"
+	}
 }

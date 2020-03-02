@@ -1,6 +1,7 @@
 #pragma once
-#include <DXSample.h>
+#include "DXSample.h"
 
+#include <cstdint>
 #include <memory>
 #include <vector>
 
