@@ -5,6 +5,13 @@
 		}
 	],
 	"settings": {
+		"C_Cpp.clang_format_fallbackStyle": "none",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"C_Cpp.default.cppStandard": "c++17",
+		"C_Cpp.default.cStandard": "c11",
+		"files.trimTrailingWhitespace": true,
+		"files.encoding": "utf8",
 		"files.associations": {
 			"vector": "cpp",
 			"initializer_list": "cpp",
@@ -58,7 +65,11 @@
 			"xmemory0": "cpp",
 			"xstddef": "cpp",
 			"xtr1common": "cpp"
-		},
-		"files.encoding": "utf8"
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools"
+		]
 	}
 }
