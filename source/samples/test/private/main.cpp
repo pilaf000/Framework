@@ -2,37 +2,33 @@
 
 namespace
 {
-
 void Test()
 {
-	auto x = 1.f;
-	auto y = 2u;
-	auto z = 0.;
+    auto x = 1.f;
+    auto y = 2u;
+    auto z = 0.;
 
-	auto f = [&]() 
-	{
-		double result = 0.;
+    auto f = [&]() {
+        double result = 0.;
 
-		result = (double)x + (double)y;
+        result = (double)x + (double)y;
 
-		return result;
-	};
-	auto a = f();
+        return result;
+    };
+    auto a = f();
 }
-
-}
-
+}  // namespace
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
-	Common::Window::Description windowDesc = {};
-	windowDesc.title = L"Hello, World";
-	windowDesc.width = 640;
-	windowDesc.height = 360;
+    Common::Window::Description windowDesc = {};
+    windowDesc.title = L"Hello, World";
+    windowDesc.width = 640;
+    windowDesc.height = 360;
 
-	Test();
+    Test();
 
-	auto app = Common::Application::Create(windowDesc, hInstance, nCmdShow);
-	app->MainLoop();
-	return 0;
+    auto app = Common::Application::Create(windowDesc, hInstance, nCmdShow);
+    app->MainLoop();
+    return 0;
 }
