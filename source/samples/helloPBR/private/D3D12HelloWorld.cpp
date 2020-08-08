@@ -19,7 +19,7 @@ D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name)
     , m_materialConstantBufferBegin(nullptr)
     , m_lightConstantBufferBegin(nullptr)
     , m_angle(0.f)
-    , m_clearColor{ 0.f, 0.2f, 0.4f, 1.f }
+    , m_clearColor { 0.f, 0.2f, 0.4f, 1.f }
 {
     InitializeMatrix();
 }
