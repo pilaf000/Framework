@@ -11,7 +11,7 @@ enum class CommandQueueFlag : std::uint8_t
 
 enum class CommandListType : std::uint8_t
 {
-    Direct = 0,
+    Direct = 0x00,
     Bundle,
     Compute,
     Copy,

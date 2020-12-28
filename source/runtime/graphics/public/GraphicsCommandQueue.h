@@ -9,9 +9,6 @@ class GraphicsDevice;
 
 class CommandQueue
 {
-    class Impl;
-    std::unique_ptr<Impl> m_impl;
-
 public:
     struct Description
     {
@@ -23,6 +20,15 @@ public:
 
     CommandQueue(const Description& desc);
     ~CommandQueue() = default;
+
+public:
+    const bool IsEnabled() const;
+
+    const bool Initialize(const GraphicsDevice& device);
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> m_impl;
 };
 
 } /// end of namespace Graphics

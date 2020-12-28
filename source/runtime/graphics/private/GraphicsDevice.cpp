@@ -3,6 +3,8 @@
 #include <GraphicsDevice.h>
 #include <GraphicsHelper.h>
 
+#include <GraphicsCommandQueue.h>
+
 namespace Graphics
 {
 using namespace DirectX;
@@ -15,7 +17,7 @@ public:
     ~Impl();
 
 public:
-    const ID3D12Device* NativeDevice() const;
+    ID3D12Device* NativeDevice() const;
 
 private:
     void GetHardwareAdapter(IDXGIFactory2* factory, IDXGIAdapter1** adapters);
@@ -58,7 +60,7 @@ GraphicsDevice::Impl::~Impl()
 {
 }
 
-const ID3D12Device* GraphicsDevice::Impl::NativeDevice() const
+ID3D12Device* GraphicsDevice::Impl::NativeDevice() const
 {
     return m_nativeDevice.Get();
 }
@@ -85,11 +87,6 @@ void GraphicsDevice::Impl::GetHardwareAdapter(IDXGIFactory2* factory, IDXGIAdapt
 
 //////////////////////////////////////////////////////////
 
-const ID3D12Device* GraphicsDevice::NativeDevice() const
-{
-    return m_impl->NativeDevice();
-}
-
 GraphicsDevice::GraphicsDevice()
     : m_impl(std::make_unique<Impl>())
 {
@@ -98,6 +95,11 @@ GraphicsDevice::GraphicsDevice()
 GraphicsDevice::~GraphicsDevice()
 {
     m_impl.reset();
+}
+
+ID3D12Device* GraphicsDevice::NativeDevice() const
+{
+    return m_impl->NativeDevice();
 }
 
 } /// end of namespace Graphics

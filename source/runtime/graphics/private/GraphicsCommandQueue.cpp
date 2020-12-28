@@ -48,7 +48,13 @@ inline D3D12_COMMAND_LIST_TYPE TypeConversion(Graphics::CommandListType& type)
             break;
     }
 }
+
+inline D3D12_COMMAND_QUEUE_DESC TypeConversion(Graphics::CommandQueue::Description& desc)
+{
+    return { TypeConversion(desc.type), TypeConversion(desc.flag) };
 }
+
+} /// end of namespace
 
 namespace Graphics
 {
@@ -61,26 +67,40 @@ public:
     Impl(const Description& desc);
     ~Impl() = default;
 
-public:
+    const bool Initialize(const GraphicsDevice& device);
+
+private:
     Description m_desc;
     ComPtr<ID3D12CommandQueue> m_nativeCommandQueue;
 };
 
 CommandQueue::Impl::Impl(const Description& desc)
+    : m_desc(desc)
 {
-    (void)desc;
+}
+
+const bool CommandQueue::Impl::Initialize(const GraphicsDevice& device)
+{
+    auto nativeDevice = device.NativeDevice();
+    auto nativeDesc = TypeConversion(m_desc);
+    nativeDevice->CreateCommandQueue(&nativeDesc, IID_PPV_ARGS(&m_nativeCommandQueue));
 }
 
 //////////////////////////////////////////////////////
 
-CommandQueue* CommandQueue::Create(GraphicsDevice* device, Description& desc)
-{
-    return nullptr;
-}
-
 CommandQueue::CommandQueue(const Description& desc)
     : m_impl(std::make_unique<Impl>(desc))
 {
+}
+
+const bool CommandQueue::IsEnabled() const
+{
+    return;
+}
+
+const bool CommandQueue::Initialize(const GraphicsDevice& device)
+{
+    return m_impl->Initialize(device);
 }
 
 } /// end of namespace Graphics

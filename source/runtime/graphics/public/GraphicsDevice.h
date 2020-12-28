@@ -4,16 +4,22 @@
 namespace Graphics
 {
 
+class GraphicsCommandQueue;
+
 class GraphicsDevice
 {
-    class Impl;
-    std::unique_ptr<Impl> m_impl;
-
 public:
     GraphicsDevice();
     ~GraphicsDevice();
 
-    const ID3D12Device* NativeDevice() const;
+public:
+    ID3D12Device* NativeDevice() const;
+
+    GraphicsCommandQueue* CreateCommandQueue(const CommandQueue::Description& desc) const;
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> m_impl;
 };
 
 } /// end of namespace Graphics
