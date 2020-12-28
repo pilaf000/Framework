@@ -19,4 +19,9 @@ enum class CommandListType : std::uint8_t
     VideoProcess
 };
 
+enum class FormatType : std::uint8_t
+{
+    R8G8B8A8_UNORM = 0x00,
+};
+
 }
