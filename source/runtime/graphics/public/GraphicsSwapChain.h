@@ -20,10 +20,12 @@ public:
         FormatType format = FormatType::R8G8B8A8_UNORM;
         std::uint32_t width;
         std::uint32_t height;
+        Description() = default;
     };
 
 public:
-    SwapChain(const Common::Window& window);
+    SwapChain() = delete;
+    SwapChain(std::shared_ptr<Common::Window> window);
     ~SwapChain();
 
 public:

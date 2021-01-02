@@ -7,45 +7,35 @@ namespace
 {
 inline D3D12_COMMAND_QUEUE_FLAGS TypeConversion(Graphics::CommandQueueFlag& flag)
 {
-    switch(flag)
+    switch (flag)
     {
-        case Graphics::CommandQueueFlag::None:
-            return D3D12_COMMAND_QUEUE_FLAG_NONE;
-            break;
-        case Graphics::CommandQueueFlag::DisableGPUFlag:
-            return D3D12_COMMAND_QUEUE_FLAG_DISABLE_GPU_TIMEOUT;
-            break;
-        default:
-            return D3D12_COMMAND_QUEUE_FLAG_NONE;
-            break;
+    case Graphics::CommandQueueFlag::None:
+        return D3D12_COMMAND_QUEUE_FLAG_NONE;
+    case Graphics::CommandQueueFlag::DisableGPUFlag:
+        return D3D12_COMMAND_QUEUE_FLAG_DISABLE_GPU_TIMEOUT;
+    default:
+        return D3D12_COMMAND_QUEUE_FLAG_NONE;
     }
 }
 
 inline D3D12_COMMAND_LIST_TYPE TypeConversion(Graphics::CommandListType& type)
 {
-    switch(type)
+    switch (type)
     {
-        case Graphics::CommandListType::Direct:
-            return D3D12_COMMAND_LIST_TYPE_DIRECT;
-            break;
-        case Graphics::CommandListType::Bundle:
-            return D3D12_COMMAND_LIST_TYPE_BUNDLE;
-            break;
-        case Graphics::CommandListType::Compute:
-            return D3D12_COMMAND_LIST_TYPE_COMPUTE;
-            break;
-        case Graphics::CommandListType::Copy:
-            return D3D12_COMMAND_LIST_TYPE_COPY;
-            break;
-        case Graphics::CommandListType::VideoDecode:
-            return D3D12_COMMAND_LIST_TYPE_VIDEO_DECODE;
-            break;
-        case Graphics::CommandListType::VideoProcess:
-            return D3D12_COMMAND_LIST_TYPE_VIDEO_PROCESS;
-            break;
-        default:
-            return D3D12_COMMAND_LIST_TYPE_DIRECT;
-            break;
+    case Graphics::CommandListType::Direct:
+        return D3D12_COMMAND_LIST_TYPE_DIRECT;
+    case Graphics::CommandListType::Bundle:
+        return D3D12_COMMAND_LIST_TYPE_BUNDLE;
+    case Graphics::CommandListType::Compute:
+        return D3D12_COMMAND_LIST_TYPE_COMPUTE;
+    case Graphics::CommandListType::Copy:
+        return D3D12_COMMAND_LIST_TYPE_COPY;
+    case Graphics::CommandListType::VideoDecode:
+        return D3D12_COMMAND_LIST_TYPE_VIDEO_DECODE;
+    case Graphics::CommandListType::VideoProcess:
+        return D3D12_COMMAND_LIST_TYPE_VIDEO_PROCESS;
+    default:
+        return D3D12_COMMAND_LIST_TYPE_DIRECT;
     }
 }
 
